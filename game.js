@@ -163,13 +163,13 @@ function update() {
     hero.body.velocity.y = 0;
   }
   if (cursors.right.isDown && cursors.up.isDown) {
-    hero.angle -= 0.4;
+    hero.angle -= 0.8;
   } else if (cursors.right.isDown && cursors.down.isDown) {
-    hero.angle += 0.4;
+    hero.angle += 0.8;
   } else if (cursors.left.isDown && cursors.up.isDown) {
-    hero.angle -= 0.4;
+    hero.angle -= 0.8;
   } else if (cursors.left.isDown && cursors.down.isDown) {
-    hero.angle += 0.4;
+    hero.angle += 0.8;
   }
   if (game.input.activePointer.isDown) {
     shoot();
@@ -178,7 +178,7 @@ function update() {
 
 function render() {
   game.debug.text('Enemies: ' + remainingDrones + ' / ' + totalDrones, 32, 32);
-  game.debug.text('Score: ' + score, 700, 32);
+  game.debug.text('Score: ' + score, 800, 32);
 }
 
 function shoot() {
