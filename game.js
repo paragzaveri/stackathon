@@ -6,7 +6,7 @@ let config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: 0 },
       debug: false,
     },
   },
@@ -18,7 +18,10 @@ let config = {
 };
 
 // global game variables
-
+let sky;
+let hero;
+let cursors;
+let gameOver;
 // var player;
 // var stars;
 // var bombs;
@@ -33,6 +36,8 @@ let game = new Phaser.Game(config);
 
 function preload() {
   this.load.image('background', 'assets/background.png');
+  this.load.image('heroShip', 'assets/ships/shipgrey3.png');
+
   // this.load.image('ground', 'assets/platform.png');
   // this.load.image('star', 'assets/star.png');
   // this.load.image('bomb', 'assets/bomb.png');
@@ -44,10 +49,40 @@ function preload() {
 
 function create() {
   //  A simple background for our game
-  this.add.image(400, 300, 'background');
+  sky = this.add.image(400, 300, 'background');
+  // sky.fixedToCamera = true;
+  // The hero ship
+  hero = this.physics.add.sprite(200, 100, 'heroShip').setScale(0.25);
+  hero.setCollideWorldBounds(true);
+
+  //input events
+  cursors = this.input.keyboard.createCursorKeys();
+  this.cameras.main.startFollow(hero);
 }
 
-function update() {}
+function update() {
+  if (gameOver) {
+    return;
+  }
+  if (cursors.left.isDown) {
+    hero.setVelocityX(-140);
+  } else if (cursors.right.isDown) {
+    hero.setVelocityX(140);
+  } else if (cursors.up.isDown) {
+    hero.setVelocityY(-80);
+  } else if (cursors.down.isDown) {
+    hero.setVelocityY(80);
+  }
+  if (cursors.right.isDown && cursors.up.isDown) {
+    hero.angle -= 0.4;
+  } else if (cursors.right.isDown && cursors.down.isDown) {
+    hero.angle += 0.4;
+  } else if (cursors.left.isDown && cursors.up.isDown) {
+    hero.angle -= 0.4;
+  } else if (cursors.left.isDown && cursors.down.isDown) {
+    hero.angle += 0.4;
+  }
+}
 //  The platforms group contains the ground and the 2 ledges we can jump on
 // platforms = this.physics.add.staticGroup();
 
