@@ -19,6 +19,7 @@ let drones;
 let droneBullets;
 let totalDrones = 0;
 let remainingDrones = 0;
+let playerHealth = 20;
 
 let score = 0;
 let scoreText;
@@ -133,9 +134,9 @@ function update() {
     return;
   }
   game.physics.arcade.overlap(droneBullets, hero, dronePlayerHit, null, this);
-  remainingDrones = 0;
+  // remainingDrones = 0;
   for (let i = 0; i < drones.length; i++) {
-    remainingDrones++;
+    // remainingDrones++;
     game.physics.arcade.collide(hero, drones[i].drone);
     game.physics.arcade.overlap(
       heroBullets,
@@ -188,17 +189,26 @@ function shoot() {
 
 function dronePlayerHit(hero, droneBullet) {
   droneBullet.kill();
+  playerHealth--;
+  if (playerHealth <= 0) {
+    hero.kill();
+    gameOver = true;
+  }
 }
 
 function playerDroneHit(drone, heroBullet) {
   heroBullet.kill();
   drone.kill();
-  remainingDrones -= 1;
   score += 10;
+  remainingDrones -= 1;
+  if (remainingDrones <= 0) {
+    gameOver = true;
+  }
   // drones[heroBullet.name].damage();
 }
 
 function render() {
-  game.debug.text('Enemies: ' + remainingDrones + ' / ' + totalDrones, 32, 32);
+  game.debug.text(`Enemies: ${remainingDrones}/${totalDrones}`, 32, 32);
+  game.debug.text(`Player Health: ${playerHealth}`, 32, 550);
   game.debug.text('Score: ' + score, 800, 32);
 }
