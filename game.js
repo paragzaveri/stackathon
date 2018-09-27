@@ -19,7 +19,7 @@ let drones;
 let droneBullets;
 let totalDrones = 0;
 let remainingDrones = 0;
-let playerHealth = 20;
+let playerHealth = 30;
 
 let score = 0;
 let scoreText;
