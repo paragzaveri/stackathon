@@ -54,7 +54,7 @@ EnemyDrone.prototype.damage = function() {
 };
 
 EnemyDrone.prototype.update = function() {
-  if (this.game.physics.arcade.distanceBetween(this.drone, this.hero) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this.drone, this.hero) < 350) {
     if (
       this.game.time.now > this.nextFire &&
       this.droneBullets.countDead() > 0 &&
@@ -147,16 +147,16 @@ function update() {
     drones[i].update();
   }
   if (cursors.left.isDown) {
-    hero.body.velocity.x = -200;
+    hero.body.velocity.x = -240;
     // game.camera.x -= 4;
   } else if (cursors.right.isDown) {
-    hero.body.velocity.x = 200;
+    hero.body.velocity.x = 240;
     // game.camera.x += 4;
   } else if (cursors.up.isDown) {
-    hero.body.velocity.y = -100;
+    hero.body.velocity.y = -130;
     // game.camera.y -= 4;
   } else if (cursors.down.isDown) {
-    hero.body.velocity.y = 100;
+    hero.body.velocity.y = 130;
     // game.camera.y += 4;
   } else {
     hero.body.velocity.x = 0;
@@ -176,18 +176,13 @@ function update() {
   }
 }
 
-function render() {
-  game.debug.text('Enemies: ' + remainingDrones + ' / ' + totalDrones, 32, 32);
-  game.debug.text('Score: ' + score, 800, 32);
-}
-
 function shoot() {
   if (game.time.now > nextFire && heroBullets.countDead() > 0) {
     nextFire = game.time.now + heroFireRate;
     let bullet = heroBullets.getFirstDead();
     bullet.reset(hero.x, hero.y);
     bullet.scale.setTo(0.25, 0.25);
-    game.physics.arcade.moveToPointer(bullet, 300);
+    game.physics.arcade.moveToPointer(bullet, 600);
   }
 }
 
@@ -198,6 +193,12 @@ function dronePlayerHit(hero, droneBullet) {
 function playerDroneHit(drone, heroBullet) {
   heroBullet.kill();
   drone.kill();
+  remainingDrones -= 1;
   score += 10;
   // drones[heroBullet.name].damage();
+}
+
+function render() {
+  game.debug.text('Enemies: ' + remainingDrones + ' / ' + totalDrones, 32, 32);
+  game.debug.text('Score: ' + score, 800, 32);
 }
